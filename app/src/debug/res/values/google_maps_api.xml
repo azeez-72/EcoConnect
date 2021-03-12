@@ -1,0 +1,23 @@
+<resources>
+    <!--
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=91:43:3C:01:5F:AA:5E:D1:F3:0A:90:46:1B:6F:8A:78:34:20:D8:DD%3Bio.realworld.ecoconnect.ui
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    io.realworld.ecoconnect.ui
+
+    SHA-1 certificate fingerprint:
+    91:43:3C:01:5F:AA:5E:D1:F3:0A:90:46:1B:6F:8A:78:34:20:D8:DD
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDHdJkCOM86d4uRCtuD7QlE8j0sDJu5GMk</string>
+</resources>

@@ -86,7 +86,7 @@ class signup_fragment : Fragment() {
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(activity.requireContext(),"Cannot connect to firebase",Toast.LENGTH_SHORT)
+                        Toast.makeText(activity.requireContext(),"Cannot connect to firebase",Toast.LENGTH_SHORT).show()
                     }
 
                 })
