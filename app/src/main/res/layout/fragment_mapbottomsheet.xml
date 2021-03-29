@@ -13,18 +13,49 @@
 
         <TextView
             android:layout_width="0dp"
+            android:textColor="@color/black"
             android:layout_height="wrap_content"
             android:layout_weight="10"
+            android:textAlignment="center"
+            android:textSize="16sp"
             android:layout_gravity="center"
             android:id="@+id/name_text"
-            android:text="Address"/>
+            android:text="Name"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:id="@+id/pickup_button"
             android:layout_weight="1"
             android:text="PICKUP"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:layout_gravity="center"
+            android:textColor="@android:color/darker_gray"
+            android:maxLines="3"
+            android:id="@+id/address_text"
+            android:text="Address"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:id="@+id/pickupTime_text"
+            android:textColor="@android:color/holo_green_dark"
+            android:text="Time"/>
 
     </LinearLayout>
 
