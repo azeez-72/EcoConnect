@@ -4,38 +4,37 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.google.type.LatLng
 import io.realworld.ecoconnect.repositories.FirestoreRepository
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.tasks.await
+import java.util.*
 
 class MapsViewModel : ViewModel() {
 
+    var reference: CollectionReference = FirebaseFirestore.getInstance().collection("NGO Addresses")
+
     private val TAG = "MAP_VIEWMODEL"
 
+    private val ngoData : MutableList<Map<String, Any>> = mutableListOf()
+
     private val fireRepo : FirestoreRepository = FirestoreRepository()
-    private val addressList : MutableList<GeoPoint> = mutableListOf()
-    private val addRef = fireRepo.getAddRef()
 
-    fun getGeoPoints() : MutableList<GeoPoint> {
-        addRef.get().addOnSuccessListener { query ->
-            query.documents.forEach { doc->
-                val geoPoint: GeoPoint? = doc.data?.get("Location") as? GeoPoint
-                Log.d(TAG,"lat : ${geoPoint?.latitude} lng : ${geoPoint?.longitude}")
+    suspend fun getNGOData() : List<Map<String,Any>> {
 
-                if(geoPoint != null) {
-                    addressList.add(geoPoint)
-                }
-            }
+        reference.get().await().forEach {
+            Log.d(TAG,"Data from test : ${it.data}")
+            ngoData.add(it.data)
         }
-            .addOnFailureListener {
-                Log.d(TAG,"Oops! Error! - ${it.message}",it)
-            }
-        return addressList
+        return ngoData
     }
 
-    private val _addresses = MutableLiveData<List<GeoPoint>>().apply {
-        value = addressList
+    private val _ngoData = MutableLiveData<List<Map<String,Any>>>().apply {
+        value = ngoData
     }
 
-    val addresses : LiveData<List<GeoPoint>> = _addresses
+    val O_ngoData : LiveData<List<Map<String,Any>>> = _ngoData
 }
