@@ -19,9 +19,10 @@
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="io.realworld.ecoconnect.ui.detect.DetectFragment"
+        android:name="io.realworld.ecoconnect.ui.detect.CameraFragment"
         android:label="@string/menu_detect"
-        tools:layout="@layout/fragment_detect" />
+        tools:layout="@layout/fragment_camera" />
+
     <fragment
         android:id="@+id/nav_maps"
         android:name="io.realworld.ecoconnect.ui.maps.MapsFragment"
