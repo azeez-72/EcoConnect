@@ -1,4 +1,4 @@
-package io.realworld.ecoconnect.ui.slideshow
+package io.realworld.ecoconnect.ui.detect
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import io.realworld.ecoconnect.R
 
-class SlideshowFragment : Fragment() {
+class DetectFragment : Fragment() {
 
-    private lateinit var slideshowViewModel: SlideshowViewModel
+    private lateinit var detectViewModel: DetectViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        slideshowViewModel =
-                ViewModelProvider(this).get(SlideshowViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_slideshow, container, false)
+        detectViewModel =
+                ViewModelProvider(this).get(DetectViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_detect, container, false)
         val textView: TextView = root.findViewById(R.id.text_slideshow)
-        slideshowViewModel.text.observe(viewLifecycleOwner, Observer {
+        detectViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
