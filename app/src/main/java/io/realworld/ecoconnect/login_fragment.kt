@@ -150,7 +150,7 @@ class login_fragment : Fragment() {
 
 
                 else{
-                    Toast.makeText(this.context, "Unsuccesful :(", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this.context, "Unsuccessful :(", Toast.LENGTH_SHORT).show()
                 }
             }
 
