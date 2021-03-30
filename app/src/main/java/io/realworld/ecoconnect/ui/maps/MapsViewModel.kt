@@ -19,23 +19,28 @@ class MapsViewModel : ViewModel() {
 
     private val TAG = "MAP_VIEWMODEL"
 
-    private val ngoData : MutableList<Map<String, Any>> = mutableListOf()
+    private val ngoData : MutableList<Map<String, Any>>? = mutableListOf()
 
     private val fireRepo : FirestoreRepository = FirestoreRepository()
 
-    private var dataMap : Map<String,Any> = mutableMapOf()
+    private var dataMap : Map<String,Any>? = mutableMapOf()
 
-    suspend fun getNGOData() : List<Map<String,Any>> {
+    suspend fun getNGOData() : List<Map<String,Any>>? {
+        try {
+            reference.get().await().forEach {
+                Log.d(TAG,"Data from test : ${it.data}")
+                ngoData?.add(it.data)
+            }
+        } catch (e:Exception) {Log.d(TAG,"Exception : $e")}
 
-        reference.get().await().forEach {
-            Log.d(TAG,"Data from test : ${it.data}")
-            ngoData.add(it.data)
-        }
         return ngoData
     }
 
-    suspend fun getDataById(id : String) : Map<String,Any> {
-        dataMap = reference.document(id).get().await().data as Map<String, Any>
+    suspend fun getDataById(id : String) : Map<String,Any>? {
+        try {
+            dataMap = reference.document(id).get().await().data
+            Log.d("TAG",dataMap.toString())
+        } catch (e:Exception) {Log.d(TAG,"Exception : $e")}
 
         return dataMap
     }

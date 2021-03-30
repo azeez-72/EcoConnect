@@ -1,7 +1,6 @@
 package io.realworld.ecoconnect.ui.maps
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.realworld.ecoconnect.R
 import kotlinx.coroutines.launch
@@ -21,8 +19,8 @@ class MapsBottomSheetFragment : BottomSheetDialogFragment() {
     private var TAG = "MAP_BOTTOMSHEET"
 
     private var pickupButton : Button? = null
-    lateinit var ngoId : String
-    private var dataMap : Map<String,Any> = mutableMapOf()
+    private var ngoId : String? = ""
+    private var dataMap : Map<String,Any>? = mutableMapOf()
 
     private lateinit var mapViewModel: MapsViewModel
 
@@ -39,19 +37,20 @@ class MapsBottomSheetFragment : BottomSheetDialogFragment() {
         val pickupTime : TextView? = root?.findViewById(R.id.pickupTime_text)
         pickupButton = root?.findViewById(R.id.pickup_button)
 
-        val ngoId : String? = this.arguments?.getString("NGO_Id")
+
+        try {
+            ngoId = this.arguments?.getString("NGO_Id").toString()
+        } catch (e:Exception) {e.printStackTrace().toString()}
 
         mapViewModel.viewModelScope.launch {
-            if (ngoId != null) {
-                dataMap = mapViewModel.getDataById(ngoId)
+            dataMap = ngoId?.let { mapViewModel.getDataById(it) }
 
-                name?.text = dataMap["Name"] as CharSequence?
-                address?.text = dataMap["address"] as CharSequence?
-            }
+            name?.text = dataMap!!["Name"] as CharSequence?
+            address?.text = dataMap!!["address"] as CharSequence?
         }
 
         pickupButton?.setOnClickListener {
-            val bundle : Bundle = Bundle(1)
+            val bundle = Bundle(1)
             bundle.putString("docId",ngoId)
             root?.findNavController()?.navigate(R.id.action_mapsBottomSheetFragment_to_pickUpFormFragment)
         }
