@@ -32,26 +32,23 @@ class MapsFragment : Fragment() {
     private var address : String? = "Address"
     private var id : String? = "id"
 
-    private lateinit var locationListener : LocationListener
-    private lateinit var locationManager : LocationManager
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    android.Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                Log.d(TAG, "Permission granted")
-            }
-        }
-    }
+//    private lateinit var locationListener : LocationListener
+//    private lateinit var locationManager : LocationManager
+//
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<out String>,
+//        grantResults: IntArray
+//    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//
+//        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//            if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//                Log.d(TAG, "Permission granted")
+//                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0F,locationListener)
+//            }
+//        }
+//    }
 
     private val callback = OnMapReadyCallback { googleMap ->
 
@@ -87,19 +84,19 @@ class MapsFragment : Fragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        if(ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),100)
-        } else {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,3000,1000f,locationListener)
-        }
-
-        locationManager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-        locationListener = LocationListener { location -> Log.d(TAG,"${location.latitude} ${location.longitude}") }
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//
+//        locationManager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+//
+//        locationListener = LocationListener { location -> Log.d(TAG,"${location.latitude} ${location.longitude}") }
+//
+//        if(ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),100)
+//        } else {
+//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0F,locationListener)
+//        }
+//    }
 
     private lateinit var mapViewModel: MapsViewModel
 
