@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map_navigation"
+    app:startDestination="@id/mapsBottomSheetFragment">
+
+    <dialog
+        android:id="@+id/mapsBottomSheetFragment"
+        android:name="io.realworld.ecoconnect.ui.maps.MapsBottomSheetFragment"
+        android:label="MapsBottomSheetFragment" >
+        <action
+            android:id="@+id/action_mapsBottomSheetFragment_to_pickUpFormFragment"
+            app:destination="@id/pickUpFormFragment" />
+    </dialog>
+    <fragment
+        android:id="@+id/pickUpFormFragment"
+        android:name="io.realworld.ecoconnect.ui.pickup.PickUpFormFragment"
+        android:label="PickUpFormFragment" >
+        <action
+            android:id="@+id/action_pickUpFormFragment_to_mapsBottomSheetFragment"
+            app:destination="@id/mapsBottomSheetFragment" />
+    </fragment>
+</navigation>

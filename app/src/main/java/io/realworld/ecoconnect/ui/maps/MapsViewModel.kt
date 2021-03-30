@@ -23,6 +23,8 @@ class MapsViewModel : ViewModel() {
 
     private val fireRepo : FirestoreRepository = FirestoreRepository()
 
+    private var dataMap : Map<String,Any> = mutableMapOf()
+
     suspend fun getNGOData() : List<Map<String,Any>> {
 
         reference.get().await().forEach {
@@ -30,6 +32,12 @@ class MapsViewModel : ViewModel() {
             ngoData.add(it.data)
         }
         return ngoData
+    }
+
+    suspend fun getDataById(id : String) : Map<String,Any> {
+        dataMap = reference.document(id).get().await().data as Map<String, Any>
+
+        return dataMap
     }
 
     private val _ngoData = MutableLiveData<List<Map<String,Any>>>().apply {
