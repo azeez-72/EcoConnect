@@ -335,10 +335,7 @@ class CameraFragment : Fragment() {
             // The analyzer can then be assigned to the instance
             .also {
                 it.setAnalyzer(cameraExecutor, LuminosityAnalyzer { luma ->
-                    // Values returned from our analyzer are passed to the attached listener
-                    // We log image analysis results here - you should do something useful
-                    // instead!
-                    Log.d(TAG, "Average luminosity: $luma")
+
                 })
             }
 
@@ -422,7 +419,8 @@ class CameraFragment : Fragment() {
                             Log.d(TAG, "Photo capture succeeded: $savedUri")
                             val bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
                             val output = imageClassifier.classify(bitmap)
-                            showToast(output)
+                            Log.i("New", output)
+//                            showToast(output)
 
                             // imageClassifier.classifyAsync()
 
@@ -436,7 +434,7 @@ class CameraFragment : Fragment() {
                                 arrayOf(savedUri.toFile().absolutePath),
                                 arrayOf(mimeType)
                             ) { _, uri ->
-                                Log.d(TAG, "Image capture scanned into media store: $uri")
+                                Log.d("New", "Image capture scanned into media store: $uri")
                             }
                         }
                     })
@@ -542,7 +540,6 @@ class CameraFragment : Fragment() {
          * @param image image being analyzed VERY IMPORTANT: Analyzer method implementation must
          * call image.close() on received images when finished using them. Otherwise, new images
          * may not be received or the camera may stall, depending on back pressure setting.
-         *
          */
         override fun analyze(image: ImageProxy) {
             // If there are no listeners attached, we don't need to perform analysis
