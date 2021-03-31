@@ -1,4 +1,7 @@
 package io.realworld.ecoconnect.ui.pickup
 
-class PickUpFormViewModel {
+import androidx.lifecycle.ViewModel
+
+class PickUpFormViewModel : ViewModel() {
+
 }

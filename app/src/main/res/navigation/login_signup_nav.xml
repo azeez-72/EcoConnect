@@ -12,9 +12,6 @@
         <action
             android:id="@+id/action_login_fragment2_to_signup_fragment2"
             app:destination="@id/signup_fragment2" />
-        <action
-            android:id="@+id/action_login_fragment2_to_signup_fragment2"
-            app:destination="@id/signup_fragment2" />
     </fragment>
     <fragment
         android:id="@+id/signup_fragment2"

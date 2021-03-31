@@ -27,5 +27,23 @@
         android:id="@+id/nav_maps"
         android:name="io.realworld.ecoconnect.ui.maps.MapsFragment"
         android:label="@string/menu_maps"
-        tools:layout="@layout/fragment_maps" />
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/action_nav_maps_to_mapsBottomSheetFragment2"
+            app:destination="@id/nav_mapsBottomSheetFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_pickUpFormFragment"
+        android:name="io.realworld.ecoconnect.ui.pickup.PickUpFormFragment"
+        android:label="PickUpFormFragment"
+        tools:layout="@layout/fragment_pickupform"/>
+    <dialog
+        android:id="@+id/nav_mapsBottomSheetFragment"
+        android:name="io.realworld.ecoconnect.ui.maps.MapsBottomSheetFragment"
+        android:label="MapsBottomSheetFragment"
+        tools:layout="@layout/fragment_mapbottomsheet">
+        <action
+            android:id="@+id/action_mapsBottomSheetFragment2_to_nav_pickUpFormFragment"
+            app:destination="@id/nav_pickUpFormFragment" />
+    </dialog>
 </navigation>

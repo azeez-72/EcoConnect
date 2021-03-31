@@ -1,11 +1,11 @@
 package io.realworld.ecoconnect.ui.maps
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,9 +13,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
@@ -32,25 +33,23 @@ class MapsFragment : Fragment() {
     private var address : String? = "Address"
     private var id : String? = "id"
 
-//    private lateinit var locationListener : LocationListener
-//    private lateinit var locationManager : LocationManager
-//
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//
-//        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//            if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//                Log.d(TAG, "Permission granted")
-//                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0F,locationListener)
-//            }
-//        }
-//    }
-
     private val callback = OnMapReadyCallback { googleMap ->
+
+//        val sharedPreferences : SharedPreferences? = context?.getSharedPreferences("sharedPrefs",
+//            Context.MODE_PRIVATE
+//        )
+//        val my_lat : Double? = sharedPreferences?.getString("myLat","19")?.toDouble()
+//        val my_lng : Double? = sharedPreferences?.getString("myLng","72")?.toDouble()
+//
+//        val my_lat_lng : LatLng = LatLng(my_lat!!,my_lng!!)
+
+        val myLatLng = LatLng(19.286841,72.873859)
+
+        googleMap.addMarker(MarkerOptions().position(myLatLng).title("You're here").icon(
+            BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
+        )).tag = "my geopoint"
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng,13F))
 
         ngoData.forEach { ngo_data ->
             name = ngo_data["Name"] as String?
@@ -68,35 +67,20 @@ class MapsFragment : Fragment() {
             }
         }
 
-
         googleMap.setOnMarkerClickListener { marker->
-
-            val bottomSheetFragment = MapsBottomSheetFragment()
-            try {
-                bottomSheetFragment.show(childFragmentManager,marker.title)
-            } catch(e: Exception) {Log.d(TAG,e.printStackTrace().toString())}
-
-            bottomSheetFragment.arguments = Bundle().apply {
-                this.putString("NGO_Id",marker.tag.toString())
+            if(marker.tag != "my geopoint") {
+                val bottomSheetFragment = MapsBottomSheetFragment()
+                try {
+                    bottomSheetFragment.arguments = Bundle().apply {
+                        Log.d(TAG,"Bundle here ${marker.tag.toString()}")
+                        this.putString("NGO_Id",marker.tag.toString())
+                    }
+                    bottomSheetFragment.show(childFragmentManager,marker.title)
+                } catch(e: Exception) {Log.d(TAG,e.printStackTrace().toString())}
             }
-
             return@setOnMarkerClickListener true
         }
     }
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        locationManager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-//
-//        locationListener = LocationListener { location -> Log.d(TAG,"${location.latitude} ${location.longitude}") }
-//
-//        if(ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),100)
-//        } else {
-//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0F,locationListener)
-//        }
-//    }
 
     private lateinit var mapViewModel: MapsViewModel
 
@@ -107,6 +91,19 @@ class MapsFragment : Fragment() {
     ): View? {
         mapViewModel = ViewModelProvider(this).get(MapsViewModel::class.java)
         val root : View? = inflater.inflate(R.layout.fragment_maps,container,false)
+//
+//        val sharedPreferences : SharedPreferences? = context?.getSharedPreferences("sharedPrefs",Context.MODE_PRIVATE)
+//        val sharedLat : String? = sharedPreferences?.getString("myLat","latitude to be assigned")
+//        val sharedLng : String? = sharedPreferences?.getString("myLng","longitude to be assigned")
+//
+//        Log.d(TAG, "check $sharedLat $sharedLng")
+
+
+//        sharedPreferences?.getString("myLat","").apply {
+//            this?.let { Log.d(TAG, it) }
+//            this?.let { Log.d(TAG, it) }
+//            this?.let { Log.d(TAG, it) }
+//        }
 
         mapViewModel.O_ngoData.observe(viewLifecycleOwner, { ngo_data ->
             for(data in ngo_data) {
@@ -120,9 +117,7 @@ class MapsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         mapViewModel.viewModelScope.launch {
-
             try {
                 mapViewModel.getNGOData()?.let { ngoData.addAll(it) }
             } catch(e:Exception) {e.printStackTrace().toString()}

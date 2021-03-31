@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/map_navigation"
-    app:startDestination="@id/mapsBottomSheetFragment">
+    app:startDestination="@id/mapsFragment">
 
     <dialog
         android:id="@+id/mapsBottomSheetFragment"
@@ -20,5 +20,14 @@
         <action
             android:id="@+id/action_pickUpFormFragment_to_mapsBottomSheetFragment"
             app:destination="@id/mapsBottomSheetFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="io.realworld.ecoconnect.ui.maps.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/action_mapsFragment_to_pickUpFormFragment"
+            app:destination="@id/pickUpFormFragment" />
     </fragment>
 </navigation>
