@@ -41,26 +41,36 @@
                 android:inputType="phone" />
 
             <EditText
-                android:id="@+id/signupOTP"
+                android:id="@+id/signupLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:ems="10"
+                android:hint="Location"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/signupEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:ems="10"
+                android:hint="E-mail"
+                android:inputType="textEmailAddress" />
+
+            <EditText
+                android:id="@+id/signupPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Enter OTP"
-                android:inputType="number"
-                android:visibility="gone" />
+                android:hint="Password"
+                android:inputType="textPassword" />
 
             <Button
                 android:id="@+id/signUpButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sign Up!" />
-
-            <Button
-                android:id="@+id/signuoOTPButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="confirm otp"
-                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/loginRedirect"
@@ -69,12 +79,9 @@
                 android:layout_marginTop="8dp"
                 android:text="Already a member?   Login" />
 
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/signUpButton" />
         </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

@@ -12,6 +12,6 @@
         android:layout_height="match_parent"
         android:id="@+id/loginSignup"
         app:navGraph="@navigation/login_signup_nav"
-        android:name="androidx.navigation.fragment.NavHostFragment" />
+        android:name="androidx.navigation.fragment.NavHostFragment"></androidx.fragment.app.FragmentContainerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
