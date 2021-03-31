@@ -1,4 +1,5 @@
 <img align="left" height="50" width="50" src="https://github.com/azeez-72/EcoConnect/blob/main/images/EcoConnect_logo.png">
+
 # EcoConnect - Google Solution Challenge 2021 #
 ## by Team **Coders.ktx** ##
 
