@@ -1,3 +1,5 @@
+![alt text](https://github.com/azeez-72/EcoConnect/tree/main/images/EcoConnect_logo.png?raw=true)
+
 # EcoConnect - Google Solution Challenge 2021 #
 ## by Team **Coders.ktx** ##
 
