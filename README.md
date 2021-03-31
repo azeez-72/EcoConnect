@@ -18,4 +18,14 @@
   Edge, a ML model is used to classify images of garbage. Thus, the user becomes aware of
   what can be donated and is given a means of whom/where to donate.
   
-  ### Tech
+### Tech Stack: ###
+* To be filled
+  
+### Steps to install ###
+  
+Clone the app in your direcory using:
+
+```bash
+git clone https://github.com/azeez-72/EcoConnect.git
+```
+Once cloned, open Android Studio in that directory where you have cloned the project and run the app.
