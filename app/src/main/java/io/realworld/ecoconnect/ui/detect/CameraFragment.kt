@@ -8,10 +8,11 @@ import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.hardware.display.DisplayManager
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
@@ -51,17 +52,14 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-
 private const val PERMISSIONS_REQUEST_CODE = 10
 private val PERMISSIONS_REQUIRED = arrayOf(Manifest.permission.CAMERA)
-
 
 /** Helper type alias used for analysis use case callbacks */
 typealias LumaListener = (luma: Double) -> Unit
 
 /**
- * Main fragment for this app. Implements all camera operations including:
- * - Viewfinder
+ * Implements all camera operations including:
  * - Photo taking
  * - Image analysis
  */
@@ -69,8 +67,6 @@ class CameraFragment : Fragment() {
 
     private val ANIMATION_FAST_MILLIS = 50L
     private val ANIMATION_SLOW_MILLIS = 100L
-    private val KEY_EVENT_ACTION = "key_event_action"
-    val KEY_EVENT_EXTRA = "key_event_extra"
     private lateinit var container: ConstraintLayout
     private lateinit var viewFinder: PreviewView
     private lateinit var outputDirectory: File
@@ -79,7 +75,6 @@ class CameraFragment : Fragment() {
     private lateinit var remoteConfig: FirebaseRemoteConfig
     private var imageClassifier = ImageClassifier(this)
 
-
     private var displayId: Int = -1
     private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
     private var preview: Preview? = null
@@ -87,10 +82,6 @@ class CameraFragment : Fragment() {
     private var imageAnalyzer: ImageAnalysis? = null
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
-
-    private val displayManager by lazy {
-        requireContext().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
-    }
 
     /** Blocking camera operations are performed using this executor */
     private lateinit var cameraExecutor: ExecutorService
@@ -102,8 +93,6 @@ class CameraFragment : Fragment() {
         if (!hasPermissions(requireContext())) {
             // Request camera-related permissions
             requestPermissions(PERMISSIONS_REQUIRED, PERMISSIONS_REQUEST_CODE)
-        } else {
-            // If permissions have already been granted, proceed
         }
     }
 
@@ -118,7 +107,6 @@ class CameraFragment : Fragment() {
             if (PackageManager.PERMISSION_GRANTED == grantResults.firstOrNull()) {
                 // Take the user to the success fragment when permission is granted
                 Toast.makeText(context, "Permission request granted", Toast.LENGTH_LONG).show()
-//                navigateToCamera()
             } else {
                 Toast.makeText(context, "Permission request denied", Toast.LENGTH_LONG).show()
             }
@@ -245,16 +233,9 @@ class CameraFragment : Fragment() {
             }
     }
 
-//    @Throws(IOException::class)
-//    private fun loadModelFile(): ByteBuffer {
-//        val fileDescriptor = assets.openFd(MainActivity.MODEL_FILE)
-//        val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
-//        val fileChannel = inputStream.channel
-//        val startOffset = fileDescriptor.startOffset
-//        val declaredLength = fileDescriptor.declaredLength
-//        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
-//    }
-
+    /** To show toast on UI
+    *   Works only on the main thread
+    */
     private fun showToast(text: String) {
         Toast.makeText(
             requireActivity(),
@@ -419,10 +400,10 @@ class CameraFragment : Fragment() {
                             Log.d(TAG, "Photo capture succeeded: $savedUri")
                             val bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
                             val output = imageClassifier.classify(bitmap)
-                            Log.i("New", output)
-//                            showToast(output)
-
-                            // imageClassifier.classifyAsync()
+                            Handler(Looper.getMainLooper()).post {
+                                Log.i(TAG, "runOnUiThread")
+                                Toast.makeText(requireActivity(), "Image is detected as plastic\nCan donate ✔️", Toast.LENGTH_LONG).show()
+                            }
 
                             // If the folder selected is an external media directory, this is
                             // unnecessary but otherwise other apps will not be able to access our
