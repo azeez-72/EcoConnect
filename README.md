@@ -1,7 +1,19 @@
 # EcoConnect - Google Solution Challenge 2021 #
+## by Team **Coders.ktx** ##
 
-The 2021 Solution Challenge mission is to solve for one or more of the United Nations 17 Sustainable Development Goals using Google technology.
+#### Team Members: ####
 
-What are the United Nations 17 Sustainable Development Goals?
-Created by the United Nations in 2015 to be achieved by 2030, the 17 Sustainable Development Goals (SDGs) agreed upon by all 193 United Nations Member States aim to end poverty, ensure prosperity, and protect the planet
+* Pankaj Khushalani - pankajkk218@gmail.com
+* Azeez Dandawala - officialazeezamd@gmail.com
+* Prasad Thakare - thakareprasad80@gmail.com
 
+### Our project is aimed at managing the waste in an efficient way under the Goal : **Responsible Consumption & Production** ###
+
+* EcoConnect connects individual households to NGOs near them that provide the means of garbage
+  collection(recyclable waste) through scheduling pickups from households where they have been notified of and as well as processing the garbage for recycling or reuse. This is facilitated with
+  the help of Google Maps. Along with the ability to connect and donate waste, users can
+  detect whether the waste they have can be recycled or not. With the help of AutoML Vision
+  Edge, a ML model is used to classify images of garbage. Thus, the user becomes aware of
+  what can be donated and is given a means of whom/where to donate.
+  
+  ### Tech
