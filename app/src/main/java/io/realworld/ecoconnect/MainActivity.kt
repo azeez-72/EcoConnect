@@ -35,9 +35,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var mAuth: FirebaseAuth
-//    private var firebasePerformance = FirebasePerformance.getInstance()
-//    private lateinit var remoteConfig: FirebaseRemoteConfig
-//    private var imageClassifier = ImageClassifier(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,84 +76,6 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
-//    private fun setupImageClassifier() {
-//            configureRemoteConfig()
-//            remoteConfig.fetchAndActivate()
-//                .addOnCompleteListener { task ->
-//                    if (task.isSuccessful) {
-//                        val modelName = remoteConfig.getString("trashnet_model")
-//                        val downloadTrace = firebasePerformance.newTrace("download_model")
-//                        downloadTrace.start()
-//                        downloadModel("trashnet_model")
-//                            .addOnSuccessListener {
-//                                downloadTrace.stop()
-//                            }
-//                    } else {
-//                        showToast("Failed to fetch model.")
-//                    }
-//                }
-//    }
-//
-//    private fun configureRemoteConfig() {
-//        remoteConfig = Firebase.remoteConfig
-//        val configSettings = remoteConfigSettings {
-//            minimumFetchIntervalInSeconds = 3600
-//        }
-//        remoteConfig.setConfigSettingsAsync(configSettings)
-//    }
-//
-//    private fun downloadModel(modelName: String): Task<Void> {
-//        val remoteModel = FirebaseCustomRemoteModel.Builder(modelName).build()
-//        val firebaseModelManager = FirebaseModelManager.getInstance()
-//        return firebaseModelManager
-//            .isModelDownloaded(remoteModel)
-//            .continueWithTask { task ->
-//                // Create update condition if model is already downloaded, otherwise create download
-//                // condition.
-//                val conditions = if (task.result != null && task.result == true) {
-//                    FirebaseModelDownloadConditions.Builder()
-//                        .requireWifi()
-//                        .build() // Update condition that requires wifi.
-//                } else {
-//                    FirebaseModelDownloadConditions.Builder().build(); // Download condition.
-//                }
-//                firebaseModelManager.download(remoteModel, conditions)
-//            }
-//            .addOnSuccessListener {
-//                firebaseModelManager.getLatestModelFile(remoteModel)
-//                    .addOnCompleteListener {
-//                        val model = it.result
-//                        if (model == null) {
-//                            showToast("Failed to get model file.")
-//                        } else {
-//                            showToast("Downloaded remote model: $modelName")
-//                            imageClassifier.initialize(model)
-//                        }
-//                    }
-//            }
-//            .addOnFailureListener {
-//                showToast("Model download failed for $modelName, please check your connection.")
-//            }
-//    }
-//
-//    @Throws(IOException::class)
-//    private fun loadModelFile(): ByteBuffer {
-//        val fileDescriptor = assets.openFd(MainActivity.MODEL_FILE)
-//        val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
-//        val fileChannel = inputStream.channel
-//        val startOffset = fileDescriptor.startOffset
-//        val declaredLength = fileDescriptor.declaredLength
-//        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
-//    }
-//
-//    private fun showToast(text: String) {
-//        Toast.makeText(
-//            this,
-//            text,
-//            Toast.LENGTH_SHORT
-//        ).show()
-//    }
 
     companion object {
         fun getOutputDirectory(context: Context): File {
