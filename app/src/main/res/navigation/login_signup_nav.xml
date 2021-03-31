@@ -22,7 +22,16 @@
         android:label="fragment_signup_fragment"
         tools:layout="@layout/fragment_signup_fragment" >
         <action
-            android:id="@+id/action_signup_fragment2_to_login_fragment2"
-            app:destination="@id/login_fragment2" />
+            android:id="@+id/action_signup_fragment2_to_organizationSignIn"
+            app:destination="@id/organizationSignIn" />
+    </fragment>
+    <fragment
+        android:id="@+id/organizationSignIn"
+        android:name="io.realworld.ecoconnect.OrganizationSignIn"
+        android:label="fragment_organization_sign_in"
+        tools:layout="@layout/fragment_organization_sign_in" >
+        <action
+            android:id="@+id/action_organizationSignIn_to_signup_fragment2"
+            app:destination="@id/signup_fragment2" />
     </fragment>
 </navigation>

@@ -3,6 +3,7 @@ package io.realworld.ecoconnect
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -15,6 +16,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,15 +29,35 @@ class MainActivity : AppCompatActivity() {
 
         mAuth = FirebaseAuth.getInstance()
         val user=mAuth.currentUser
-//        if(user==null)
-//        {
-//            val loginSignupIntent = Intent(this, LoginSignUpActivity::class.java)
-//
-//            loginSignupIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//
-//
-//            startActivity(loginSignupIntent)
-//        }
+
+
+        if(user==null)
+        {
+            val loginSignupIntent = Intent(this, LoginSignUpActivity::class.java)
+            loginSignupIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(loginSignupIntent)
+            finish()
+        }
+
+        else
+        {
+            val db = Firebase.firestore
+            db.collection("NGO Addresses").document(user.uid).get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        if (task.result.exists()) {
+                            val OrganizationIntent = Intent(this, Organization::class.java)
+                            OrganizationIntent.flags =
+                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(OrganizationIntent)
+                        }
+                    } else {
+                        Toast.makeText(this, "Unable to connect to database", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                }
+        }
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
