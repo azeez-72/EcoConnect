@@ -3,7 +3,7 @@
 # EcoConnect - Google Solution Challenge 2021 #
 ## by Team **Coders.ktx** ##
 
-#### Team Members: ####
+### Team Members: ###
 
 * Pankaj Khushalani - pankajkk218@gmail.com
 * Azeez Dandawala - officialazeezamd@gmail.com
