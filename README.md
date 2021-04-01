@@ -9,7 +9,11 @@
 * Azeez Dandawala - officialazeezamd@gmail.com
 * Prasad Thakare - thakareprasad80@gmail.com
 
-### Our project is aimed at managing the waste in an efficient way under the Goal : **Responsible Consumption & Production** ###
+## Description: ##
+
+### We aim to solve the targets: ###
+1. Solid Waste Management under the **Goal 11 - Sustainable Cities.**
+2. Improving recycling rates under the **Goal 12 - Responsible Consumption & Production.**
 
 * EcoConnect connects individual households to NGOs near them that provide the means of garbage
   collection(recyclable waste) through scheduling pickups from households where they have been notified of and as well as processing the garbage for recycling or reuse. This is facilitated with
@@ -18,7 +22,7 @@
   Edge, a ML model is used to classify images of garbage. Thus, the user becomes aware of
   what can be donated and is given a means of whom/where to donate.
   
-### Tech Stack: ###
+## Tech Stack: ##
 * We built an Android mobile application using the programming language Kotlin. MVVM (Model-View-ViewModel) architecture was followed throughout for ease of scaling and smooth communication with the UI.
 
 * For the backend, Firebase was used extensively.
@@ -32,7 +36,7 @@
 
 * Git and GitHub were used for version control and effective collaboration.
   
-### Steps to install ###
+## Steps to install ##
   
 Clone the app in your direcory using:
 
