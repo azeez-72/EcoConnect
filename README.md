@@ -19,7 +19,18 @@
   what can be donated and is given a means of whom/where to donate.
   
 ### Tech Stack: ###
-* To be filled
+* We built an Android mobile application using the programming language Kotlin. MVVM (Model-View-ViewModel) architecture was followed throughout for ease of scaling and smooth communication with the UI.
+
+* For the backend, Firebase was used extensively.
+    * For authentication of individuals and organizations, Firebase Google Authentication was used.
+    * For storing app data efficiently, Cloud Firestore was used.
+    * For creating the image classification machine learning model, AutoML Vision Edge of Firebase and Google Cloud Platform were used. On GCP, Google Cloud Storage and Cloud Vision API were used. Using Cloud Vision API, a ML TFLite model was made for image classification using our custom images and labels.
+
+* XML was used with Kotlin as the frontend. Navigation drawer was used and to make efficient use of XML, fragments were used extensively.
+ 
+* Android Studio 4.2 Beta 6 was the IDE used to develop the Android mobile application. The app was thoroughly tested on the virtual device, Google Pixel 3a and other physical Android devices.
+
+* Git and GitHub were used for version control and effective collaboration.
   
 ### Steps to install ###
   
