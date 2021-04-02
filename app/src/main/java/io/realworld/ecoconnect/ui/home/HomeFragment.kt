@@ -17,17 +17,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
-import io.realworld.ecoconnect.LoginSignUpActivity
-import io.realworld.ecoconnect.MainActivity
-import io.realworld.ecoconnect.R
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import io.realworld.ecoconnect.*
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment(),LocationListener {
@@ -78,6 +81,24 @@ class HomeFragment : Fragment(),LocationListener {
 //                editor?.apply {putBoolean("firstTime",false)}?.apply()
 //            }
 //        }
+
+
+        var db= Firebase.firestore
+        val requests = mutableListOf<UserModel>()
+        val user = FirebaseAuth.getInstance().currentUser
+        db.collection("users").document(user.uid).collection("Pickups").get()
+            .addOnSuccessListener { documents->
+                for(document in documents)
+                {
+                    val doc2=document.data
+                    println(doc2)
+                    requests.add(UserModel(document.id, doc2["ngo id"].toString(), doc2["weight"].toString(), doc2["status"].toString()))
+                }
+
+                root.findViewById<RecyclerView>(R.id.user_rv).layoutManager=LinearLayoutManager(this.requireContext())
+                root.findViewById<RecyclerView>(R.id.user_rv).adapter = User_RecyclerView(requests)
+
+            }
 
         root.findViewById<Button>(R.id.signoutButton).setOnClickListener {
             FirebaseAuth.getInstance().signOut()

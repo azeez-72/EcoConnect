@@ -77,15 +77,15 @@
             android:id="@+id/editTextDescription"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:padding ="8dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginVertical="8dp"
             android:ems="15"
+            android:hint="Description"
+            android:inputType="textShortMessage"
             android:lines="5"
-            android:inputType="numberDecimal"
-            android:paddingHorizontal="8dp"
-            android:hint="Description" />
+            android:padding="8dp"
+            android:paddingHorizontal="8dp" />
 
         <Button
             android:id="@+id/button"
