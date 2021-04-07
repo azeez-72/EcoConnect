@@ -39,7 +39,7 @@ class User_RecyclerView(private val docs:MutableList<UserModel>) : RecyclerView.
         holder.weight.visibility=View.GONE
 
         holder.button.text="Cancel"
-        if(docs[position].status=="cancelled") holder.button.visibility=View.GONE
+        if(docs[position].status=="cancelled" || docs[position].status=="cancelled by NGO") holder.button.visibility=View.GONE
         holder.button.setOnClickListener {
             val db=Firebase.firestore
             db.collection("NGO Addresses").document(docs[position].ngoId)

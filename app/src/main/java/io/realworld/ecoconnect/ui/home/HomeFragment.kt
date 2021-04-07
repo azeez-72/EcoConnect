@@ -26,6 +26,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -101,10 +103,17 @@ class HomeFragment : Fragment(),LocationListener {
             }
 
         root.findViewById<Button>(R.id.signoutButton).setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            val loginSignupIntent = Intent(activity, LoginSignUpActivity::class.java)
-            loginSignupIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(loginSignupIntent)
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+            val mGoogleSignInClient= GoogleSignIn.getClient(this.requireContext(),gso)
+            mGoogleSignInClient.signOut().addOnSuccessListener {
+                FirebaseAuth.getInstance().signOut()
+                val loginSignupIntent = Intent(activity, LoginSignUpActivity::class.java)
+                loginSignupIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(loginSignupIntent)
+            }
         }
 
         return root
