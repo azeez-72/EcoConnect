@@ -30,6 +30,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import io.realworld.ecoconnect.*
@@ -84,37 +85,38 @@ class HomeFragment : Fragment(),LocationListener {
 //            }
 //        }
 
-
-        var db= Firebase.firestore
-        val requests = mutableListOf<UserModel>()
-        val user = FirebaseAuth.getInstance().currentUser
-        db.collection("users").document(user.uid).collection("Pickups").get()
-            .addOnSuccessListener { documents->
-                for(document in documents)
-                {
-                    val doc2=document.data
-                    println(doc2)
-                    requests.add(UserModel(document.id, doc2["ngo id"].toString(), doc2["weight"].toString(), doc2["status"].toString()))
-                }
-
-                root.findViewById<RecyclerView>(R.id.user_rv).layoutManager=LinearLayoutManager(this.requireContext())
-                root.findViewById<RecyclerView>(R.id.user_rv).adapter = User_RecyclerView(requests)
-
-            }
-
-        root.findViewById<Button>(R.id.signoutButton).setOnClickListener {
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build()
-            val mGoogleSignInClient= GoogleSignIn.getClient(this.requireContext(),gso)
-            mGoogleSignInClient.signOut().addOnSuccessListener {
-                FirebaseAuth.getInstance().signOut()
-                val loginSignupIntent = Intent(activity, LoginSignUpActivity::class.java)
-                loginSignupIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(loginSignupIntent)
-            }
-        }
+//        homeViewModel.viewModelScope.launch {
+//            val db= Firebase.firestore
+//            val requests = mutableListOf<UserModel>()
+//            val user : FirebaseUser? = FirebaseAuth.getInstance().currentUser
+//            db.collection("users").document(user.uid).collection("Pickups").get()
+//                .addOnSuccessListener { documents->
+//                    for(document in documents)
+//                    {
+//                        val doc2=document.data
+//                        println(doc2)
+//                        requests.add(UserModel(document.id, doc2["ngo id"].toString(), doc2["weight"].toString(), doc2["status"].toString()))
+//                    }
+//
+//                    root.findViewById<RecyclerView>(R.id.user_rv).layoutManager=LinearLayoutManager(requireContext())
+//                    root.findViewById<RecyclerView>(R.id.user_rv).adapter = User_RecyclerView(requests)
+//
+//                }
+//
+//            root.findViewById<Button>(R.id.signoutButton).setOnClickListener {
+//                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                    .requestIdToken(getString(R.string.default_web_client_id))
+//                    .requestEmail()
+//                    .build()
+//                val mGoogleSignInClient= GoogleSignIn.getClient(requireContext(),gso)
+//                mGoogleSignInClient.signOut().addOnSuccessListener {
+//                    FirebaseAuth.getInstance().signOut()
+//                    val loginSignupIntent = Intent(activity, LoginSignUpActivity::class.java)
+//                    loginSignupIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                    startActivity(loginSignupIntent)
+//                }
+//            }
+//        }
 
         return root
     }

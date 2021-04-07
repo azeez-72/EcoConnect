@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.location.LocationListener
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.widget.Toast
 import com.google.android.material.navigation.NavigationView
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.perf.FirebasePerformance
@@ -27,6 +29,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import io.realworld.ecoconnect.ui.detect.ImageClassifier
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
@@ -42,10 +45,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mAuth = FirebaseAuth.getInstance()
-        val user=mAuth.currentUser
-        if(user==null)
-        {
+        fun navigate() {
             val loginSignupIntent = Intent(this, LoginSignUpActivity::class.java)
 
             loginSignupIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -54,25 +54,49 @@ class MainActivity : AppCompatActivity() {
             startActivity(loginSignupIntent)
         }
 
-        else
-        {
-            val db = Firebase.firestore
-            db.collection("NGO Addresses").document(user.uid).get()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        if (task.result.exists()) {
-                            val OrganizationIntent = Intent(this, Organization::class.java)
-                            OrganizationIntent.flags =
-                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            startActivity(OrganizationIntent)
-                        }
-                    } else {
-                        Toast.makeText(this, "Unable to connect to database", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-
-                }
+        fun showData() {
+            val OrganizationIntent = Intent(this, Organization::class.java)
+            OrganizationIntent.flags =
+                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(OrganizationIntent)
         }
+
+        fun showToast() {
+            Toast.makeText(this, "Unable to connect to database", Toast.LENGTH_SHORT)
+                .show()
+        }
+
+//        runBlocking {
+//
+//            mAuth = FirebaseAuth.getInstance()
+//
+//            val user : FirebaseUser? = mAuth.currentUser
+//
+//            Log.d("main thing this is intolerable",user.toString())
+//
+//            if(user==null)
+//            {
+//                Log.d("main thing this is intolerable",user.toString())
+//
+//                navigate()
+//            }
+//
+//            else
+//            {
+//                val db = Firebase.firestore
+//                db.collection("NGO Addresses").document(user.uid).get()
+//                    .addOnCompleteListener { task ->
+//                        if (task.isSuccessful) {
+//                            if (task.result.exists()) {
+//                                showData()
+//                            }
+//                        } else {
+//                            showToast()
+//                        }
+//
+//                    }
+//            }
+//        }
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
