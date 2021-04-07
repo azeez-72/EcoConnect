@@ -76,8 +76,8 @@ class FormActivity() : AppCompatActivity() {
 
         val mAuth=FirebaseAuth.getInstance()
         val db=Firebase.firestore
-        db.collection("NGO Addresses").document(ngoId).collection("Pickups")
-            .add(
+        db.collection("NGO Addresses").document(ngoId).collection("Pickups").document(mAuth.currentUser.uid)
+            .set(
                 hashMapOf(
                     "name" to binding.editTextName.text.toString().trim(),
                     "phone" to binding.editTextPhoneNumber.text.toString().trim(),
@@ -85,9 +85,9 @@ class FormActivity() : AppCompatActivity() {
                     "description" to binding.editTextDescription.text.toString().trim()
                 )
             )
-            .addOnSuccessListener { result ->
+            .addOnSuccessListener {
                 db.collection("users").document(mAuth.currentUser.uid).collection("Pickups")
-                    .document(result.id).set(
+                    .document().set(
                         hashMapOf(
                             "ngo id" to ngoId,
                             "weight" to binding.editTextAmount.text.toString(),
