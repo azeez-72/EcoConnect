@@ -2,10 +2,16 @@ package io.realworld.ecoconnect
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.location.LocationListener
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -33,6 +39,7 @@ import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+import java.net.URL
 import java.nio.ByteBuffer
 import java.nio.channels.FileChannel
 
@@ -101,12 +108,23 @@ class MainActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+
+        try {
+            val uri : Uri? = mAuth.currentUser!!.photoUrl
+            val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
+            drawerLayout.findViewById<ImageView>(R.id.image_drawer).setImageBitmap(bitmap)
+            drawerLayout.findViewById<TextView>(R.id.name_drawer).text = mAuth.currentUser!!.displayName
+            drawerLayout.findViewById<TextView>(R.id.email_drawer).text = mAuth.currentUser!!.email
+        } catch(e : IOException) {
+            print(e)
+        }
+
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,R.id.nav_maps), drawerLayout)
+                R.id.nav_home,R.id.nav_slideshow,R.id.nav_maps), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 //        setupImageClassifier()
