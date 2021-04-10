@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
 
             loginSignupIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(loginSignupIntent)
+            finish()
         }
 
         fun showData() {
