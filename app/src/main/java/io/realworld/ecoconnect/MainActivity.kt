@@ -4,15 +4,19 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
 import android.location.LocationListener
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -22,6 +26,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -48,6 +53,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var mAuth: FirebaseAuth
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -56,8 +62,6 @@ class MainActivity : AppCompatActivity() {
             val loginSignupIntent = Intent(this, LoginSignUpActivity::class.java)
 
             loginSignupIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
-
             startActivity(loginSignupIntent)
         }
 
@@ -73,50 +77,52 @@ class MainActivity : AppCompatActivity() {
                 .show()
         }
 
-//        runBlocking {
-//
-//            mAuth = FirebaseAuth.getInstance()
-//
-//            val user : FirebaseUser? = mAuth.currentUser
-//
-//            Log.d("main thing this is intolerable",user.toString())
-//
-//            if(user==null)
-//            {
-//                Log.d("main thing this is intolerable",user.toString())
-//
-//                navigate()
-//            }
-//
-//            else
-//            {
-//                val db = Firebase.firestore
-//                db.collection("NGO Addresses").document(user.uid).get()
-//                    .addOnCompleteListener { task ->
-//                        if (task.isSuccessful) {
-//                            if (task.result.exists()) {
-//                                showData()
-//                            }
-//                        } else {
-//                            showToast()
-//                        }
-//
-//                    }
-//            }
-//        }
+        mAuth = FirebaseAuth.getInstance()
+
+        val user : FirebaseUser? = mAuth.currentUser
+
+        Log.d("main thing this is intolerable",user.toString())
+
+        if(user==null)
+        {
+            Log.d("main thing this is intolerable",user.toString())
+
+            navigate()
+        }
+
+        else
+        {
+            val db = Firebase.firestore
+            db.collection("NGO Addresses").document(user.uid).get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        if (task.result.exists()) {
+                            showData()
+                        }
+                    } else {
+                        showToast()
+                    }
+
+                }
+        }
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
 
         try {
-            val uri : Uri? = mAuth.currentUser!!.photoUrl
-            val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
-            drawerLayout.findViewById<ImageView>(R.id.image_drawer).setImageBitmap(bitmap)
-            drawerLayout.findViewById<TextView>(R.id.name_drawer).text = mAuth.currentUser!!.displayName
-            drawerLayout.findViewById<TextView>(R.id.email_drawer).text = mAuth.currentUser!!.email
+            val navView = findViewById<NavigationView>(R.id.nav_view)
+            val header = navView.getHeaderView(0)
+            var uri : Uri? = mAuth.currentUser!!.photoUrl
+//            val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
+//            val source = uri?.let { ImageDecoder.createSource(this.contentResolver, it) }
+//            val bitmap = source?.let { ImageDecoder.decodeBitmap(it) }
+
+            Glide.with(this.applicationContext).load(uri).into(header.findViewById(R.id.image_drawer))
+            header.findViewById<TextView>(R.id.name_drawer).text = mAuth.currentUser!!.displayName
+            header.findViewById<TextView>(R.id.email_drawer).text = mAuth.currentUser!!.email
         } catch(e : IOException) {
-            print(e)
+            println(e)
         }
 
         val navView: NavigationView = findViewById(R.id.nav_view)
