@@ -61,7 +61,8 @@ class MainActivity : AppCompatActivity() {
         fun navigate() {
             val loginSignupIntent = Intent(this, LoginSignUpActivity::class.java)
 
-            loginSignupIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            loginSignupIntent.flags =
+                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(loginSignupIntent)
             finish()
         }
@@ -80,19 +81,15 @@ class MainActivity : AppCompatActivity() {
 
         mAuth = FirebaseAuth.getInstance()
 
-        val user : FirebaseUser? = mAuth.currentUser
+        val user: FirebaseUser? = mAuth.currentUser
 
-        Log.d("main thing this is intolerable",user.toString())
+        Log.d("main thing this is intolerable", user.toString())
 
-        if(user==null)
-        {
-            Log.d("main thing this is intolerable",user.toString())
+        if (user == null) {
+            Log.d("main thing this is intolerable", user.toString())
 
             navigate()
-        }
-
-        else
-        {
+        } else {
             val db = Firebase.firestore
             db.collection("NGO Addresses").document(user.uid).get()
                 .addOnCompleteListener { task ->
@@ -105,7 +102,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                 }
-        }
+
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -114,15 +111,16 @@ class MainActivity : AppCompatActivity() {
         try {
             val navView = findViewById<NavigationView>(R.id.nav_view)
             val header = navView.getHeaderView(0)
-            var uri : Uri? = mAuth.currentUser!!.photoUrl
+            var uri: Uri? = mAuth.currentUser!!.photoUrl
 //            val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
 //            val source = uri?.let { ImageDecoder.createSource(this.contentResolver, it) }
 //            val bitmap = source?.let { ImageDecoder.decodeBitmap(it) }
 
-            Glide.with(this.applicationContext).load(uri).into(header.findViewById(R.id.image_drawer))
+            Glide.with(this.applicationContext).load(uri)
+                .into(header.findViewById(R.id.image_drawer))
             header.findViewById<TextView>(R.id.name_drawer).text = mAuth.currentUser!!.displayName
             header.findViewById<TextView>(R.id.email_drawer).text = mAuth.currentUser!!.email
-        } catch(e : IOException) {
+        } catch (e: IOException) {
             println(e)
         }
 
@@ -130,11 +128,15 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.nav_home,R.id.nav_slideshow,R.id.nav_maps), drawerLayout)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_home, R.id.nav_slideshow, R.id.nav_maps
+            ), drawerLayout
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 //        setupImageClassifier()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
