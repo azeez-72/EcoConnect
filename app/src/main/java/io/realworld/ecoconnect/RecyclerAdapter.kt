@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class Model(val id:String, val address:String, val name:String, val phone:String, val weight:String)
+class Model(val id:String, val uid:String ,val address:String, val name:String, val phone:String, val weight:String)
 
 class RecyclerAdapter(private val docs:MutableList<Model>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>()
 {
@@ -42,6 +42,8 @@ class RecyclerAdapter(private val docs:MutableList<Model>) : RecyclerView.Adapte
                 .document(docs[position].id).delete()
                 .addOnSuccessListener{
                     holder.itemView.visibility=View.GONE
+                    db.collection("users").document(docs[position].uid).collection("Pickups")
+                        .document(docs[position].id).update("status","cancelled by NGO")
                 }
         }
     }

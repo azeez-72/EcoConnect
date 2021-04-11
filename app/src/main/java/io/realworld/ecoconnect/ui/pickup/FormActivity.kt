@@ -85,20 +85,27 @@ class FormActivity() : AppCompatActivity() {
         }
 
         val mAuth=FirebaseAuth.getInstance()
+<<<<<<< HEAD
         db.collection("NGO Addresses").document(ngoId).collection("Pickups").document(mAuth.currentUser.uid)
             .set(
+=======
+        db.collection("NGO Addresses").document(ngoId).collection("Pickups")
+            .add(
+>>>>>>> 89347ad808d46bcccbe9166a6c82a8cf5e969bbf
                 hashMapOf(
                     "name" to binding.editTextName.text.toString().trim(),
+                    "uid" to mAuth.currentUser.uid,
                     "phone" to binding.editTextPhoneNumber.text.toString().trim(),
                     "weight" to binding.editTextAmount.text.toString(),
                     "description" to binding.editTextDescription.text.toString().trim()
                 )
             )
-            .addOnSuccessListener {
+            .addOnSuccessListener { doc ->
                 db.collection("users").document(mAuth.currentUser.uid).collection("Pickups")
-                    .document().set(
+                    .document(doc.id).set(
                         hashMapOf(
                             "ngo id" to ngoId,
+                            "name" to binding.textView.text,
                             "weight" to binding.editTextAmount.text.toString(),
                             "status" to "pending"
                         )

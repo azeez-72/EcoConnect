@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class UserModel(val id:String, val ngoId:String, val weight:String, val status:String)
+class UserModel(val id:String, val name:String , val ngoId:String, val weight:String, val status:String)
 
 class User_RecyclerView(private val docs:MutableList<UserModel>) : RecyclerView.Adapter<User_RecyclerView.ViewHolder>()
 {
@@ -33,7 +33,7 @@ class User_RecyclerView(private val docs:MutableList<UserModel>) : RecyclerView.
     }
 
     override fun onBindViewHolder(holder: User_RecyclerView.ViewHolder, position: Int) {
-        holder.name.text = "NGO ID: ${docs[position].ngoId}"
+        holder.name.text = "NGO: ${docs[position].name}"
         holder.phone.text = "Weight: ${docs[position].weight} kg"
         holder.address.text = "Status: ${docs[position].status}"
         holder.weight.visibility=View.GONE

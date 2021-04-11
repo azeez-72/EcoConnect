@@ -85,7 +85,7 @@ class HomeFragment : Fragment(),LocationListener {
             }
         }
 
-        homeViewModel.viewModelScope.launch {
+
             val db= Firebase.firestore
             val requests = mutableListOf<UserModel>()
             val user : FirebaseUser? = FirebaseAuth.getInstance().currentUser
@@ -95,7 +95,7 @@ class HomeFragment : Fragment(),LocationListener {
                         for(document in documents) {
                             val doc2=document.data
                             println(doc2)
-                            requests.add(UserModel(document.id, doc2["ngo id"].toString(), doc2["weight"].toString(), doc2["status"].toString()))
+                            requests.add(UserModel(document.id, doc2["name"].toString() ,doc2["ngo id"].toString(), doc2["weight"].toString(), doc2["status"].toString()))
                         }
 
                         root.findViewById<RecyclerView>(R.id.user_rv).layoutManager=LinearLayoutManager(requireContext())
@@ -117,7 +117,7 @@ class HomeFragment : Fragment(),LocationListener {
                     startActivity(loginSignupIntent)
                 }
             }
-        }
+
 
         return root
     }
