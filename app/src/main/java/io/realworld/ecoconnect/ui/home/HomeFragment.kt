@@ -26,8 +26,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import io.realworld.ecoconnect.*
@@ -59,53 +62,62 @@ class HomeFragment : Fragment(),LocationListener {
 
         getLocButton?.alpha = 0f
 
-//        val sharedPreferences : SharedPreferences? = context?.getSharedPreferences("sharedPrefs", MODE_PRIVATE)
+        val sharedPreferences : SharedPreferences? = context?.getSharedPreferences("sharedPrefs", MODE_PRIVATE)
 
-//        val firstTime : Boolean? = sharedPreferences?.getBoolean("firstTime",true)
+        val firstTime : Boolean? = sharedPreferences?.getBoolean("firstTime",true)
 
-//        if(!firstTime!!) {getLocButton?.alpha = 0f }
+        if(!firstTime!!) {getLocButton?.alpha = 0f }
 
-//        root?.findViewById<Button>(R.id.getLocationButton)?.setOnClickListener {
-//            val sharedPreferences : SharedPreferences? = context?.getSharedPreferences("sharedPrefs", MODE_PRIVATE)
-//            val editor : SharedPreferences.Editor? = sharedPreferences?.edit()
-//
-//            homeViewModel.viewModelScope.launch {
-//                editor?.apply { putBoolean("firstTime",true) }?.apply()
-//
-//                Log.d(TAG,sharedPreferences?.getBoolean("firstTime 1",false).toString())
-//
-//                getLocation()
-//
-//                Log.d(TAG,sharedPreferences?.getBoolean("firstTime 2",true).toString())
-//
-//                editor?.apply {putBoolean("firstTime",false)}?.apply()
-//            }
-//        }
+        root?.findViewById<Button>(R.id.getLocationButton)?.setOnClickListener {
+            val sharedPreferences : SharedPreferences? = context?.getSharedPreferences("sharedPrefs", MODE_PRIVATE)
+            val editor : SharedPreferences.Editor? = sharedPreferences?.edit()
+
+            homeViewModel.viewModelScope.launch {
+                editor?.apply { putBoolean("firstTime",true) }?.apply()
+
+                Log.d(TAG,sharedPreferences?.getBoolean("firstTime 1",false).toString())
+
+                getLocation()
+
+                Log.d(TAG,sharedPreferences?.getBoolean("firstTime 2",true).toString())
+
+                editor?.apply {putBoolean("firstTime",false)}?.apply()
+            }
+        }
 
 
-        var db= Firebase.firestore
-        val requests = mutableListOf<UserModel>()
-        val user = FirebaseAuth.getInstance().currentUser
-        db.collection("users").document(user.uid).collection("Pickups").get()
-            .addOnSuccessListener { documents->
-                for(document in documents)
-                {
-                    val doc2=document.data
-                    println(doc2)
-                    requests.add(UserModel(document.id, doc2["ngo id"].toString(), doc2["weight"].toString(), doc2["status"].toString()))
-                }
+            val db= Firebase.firestore
+            val requests = mutableListOf<UserModel>()
+            val user : FirebaseUser? = FirebaseAuth.getInstance().currentUser
+            if (user != null) {
+                db.collection("users").document(user.uid).collection("Pickups").get()
+                    .addOnSuccessListener { documents->
+                        for(document in documents) {
+                            val doc2=document.data
+                            println(doc2)
+                            requests.add(UserModel(document.id, doc2["name"].toString() ,doc2["ngo id"].toString(), doc2["weight"].toString(), doc2["status"].toString()))
+                        }
 
-                root.findViewById<RecyclerView>(R.id.user_rv).layoutManager=LinearLayoutManager(this.requireContext())
-                root.findViewById<RecyclerView>(R.id.user_rv).adapter = User_RecyclerView(requests)
+                        root.findViewById<RecyclerView>(R.id.user_rv).layoutManager=LinearLayoutManager(requireContext())
+                        root.findViewById<RecyclerView>(R.id.user_rv).adapter = User_RecyclerView(requests)
 
+                    }
             }
 
-        root.findViewById<Button>(R.id.signoutButton).setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            val loginSignupIntent = Intent(activity, LoginSignUpActivity::class.java)
-            loginSignupIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(loginSignupIntent)
-        }
+            root.findViewById<Button>(R.id.signoutButton).setOnClickListener {
+                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build()
+                val mGoogleSignInClient= GoogleSignIn.getClient(requireContext(),gso)
+                FirebaseAuth.getInstance().signOut()
+                mGoogleSignInClient.signOut().addOnSuccessListener {
+                    val loginSignupIntent = Intent(activity, LoginSignUpActivity::class.java)
+                    loginSignupIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(loginSignupIntent)
+                }
+            }
+
 
         return root
     }

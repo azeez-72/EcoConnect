@@ -31,7 +31,7 @@ class Organization : AppCompatActivity() {
                 for(document in documents)
                 {
                     val doc2= document.data
-                    docs.add(Model(document.id , doc2["address"].toString(),  doc2["name"].toString(), doc2["phone"].toString(), doc2["weight"].toString()))
+                    docs.add(Model(document.id, doc2["uid"].toString() , doc2["description"].toString(),  doc2["name"].toString(), doc2["phone"].toString(), doc2["weight"].toString()))
                 }
 
                 this.recycler = findViewById<RecyclerView>(R.id.recyclerView2)

@@ -43,7 +43,7 @@ class MapsFragment : Fragment() {
 //
 //        val my_lat_lng : LatLng = LatLng(my_lat!!,my_lng!!)
 
-        val myLatLng = LatLng(19.286841,72.873859)
+        val myLatLng = LatLng(17.391050,78.487630)
 
         googleMap.addMarker(MarkerOptions().position(myLatLng).title("You're here").icon(
             BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)

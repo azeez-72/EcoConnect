@@ -17,12 +17,14 @@ import com.google.firebase.ktx.Firebase
 import io.realworld.ecoconnect.MainActivity
 import io.realworld.ecoconnect.R
 import io.realworld.ecoconnect.databinding.ActivityFormBinding
+import kotlinx.coroutines.runBlocking
 
 class FormActivity() : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityFormBinding
     private var TAG = "FORM_ACTIVITY"
+    val db=Firebase.firestore
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +42,15 @@ class FormActivity() : AppCompatActivity() {
 
         Log.d(TAG,ngoId.toString())
 
-        binding.textView.text = ngoId.toString()
+        binding.textView.text = "NGO"
+        binding.pickupTimeView.text = "10AM-12PM"
+
+        runBlocking {
+            db.collection("NGO Addresses").document(ngoId!!).get().addOnSuccessListener { docSnap->
+                binding.textView.text = docSnap.data?.get("Name") as CharSequence?
+                binding.pickupTimeView.text = docSnap.data?.get("pickupTime") as CharSequence?
+            }
+        }
 
     }
 
@@ -75,21 +85,22 @@ class FormActivity() : AppCompatActivity() {
         }
 
         val mAuth=FirebaseAuth.getInstance()
-        val db=Firebase.firestore
         db.collection("NGO Addresses").document(ngoId).collection("Pickups")
             .add(
                 hashMapOf(
                     "name" to binding.editTextName.text.toString().trim(),
+                    "uid" to mAuth.currentUser.uid,
                     "phone" to binding.editTextPhoneNumber.text.toString().trim(),
                     "weight" to binding.editTextAmount.text.toString(),
                     "description" to binding.editTextDescription.text.toString().trim()
                 )
             )
-            .addOnSuccessListener { result ->
+            .addOnSuccessListener { doc ->
                 db.collection("users").document(mAuth.currentUser.uid).collection("Pickups")
-                    .document(result.id).set(
+                    .document(doc.id).set(
                         hashMapOf(
                             "ngo id" to ngoId,
+                            "name" to binding.textView.text,
                             "weight" to binding.editTextAmount.text.toString(),
                             "status" to "pending"
                         )
