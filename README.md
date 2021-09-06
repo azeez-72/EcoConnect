@@ -22,7 +22,8 @@
   Edge, a ML model is used to classify images of garbage. Thus, the user becomes aware of
   what can be donated and is given a means of whom/where to donate.
   
-  #### **You can find the apk for our app [here](https://drive.google.com/file/d/1QHJarmEV6bEPQdcAdwpQ9CB54-tf7U2Z/view?usp=sharing)** ####
+  #### **You can find the APK for our app [here](https://drive.google.com/file/d/1QHJarmEV6bEPQdcAdwpQ9CB54-tf7U2Z/view?usp=sharing)** ####
+  #### **Demonstration of our app on [YouTube](https://youtu.be/bsOMK3T-6Yw)** ####
   
 ## Tech Stack: ##
 * We built an Android mobile application using the programming language Kotlin. MVVM (Model-View-ViewModel) architecture was followed throughout for ease of scaling and smooth communication with the UI.
